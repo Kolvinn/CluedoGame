@@ -11,6 +11,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * The text component of the Game of Cluedo. This section is mostly text-based output
+ * with a text input frame solely used to assign player's names.
+ *
+ *
+ * @author Ryan
+ *
+ */
 public class TextBox extends JPanel {
 
 	private JTextField textField;
@@ -63,22 +71,44 @@ public class TextBox extends JPanel {
 		add(scrollPane, c);
 	}
 
+	/**
+	 * Appends text to the text area
+	 *
+	 * @param text
+	 */
 	public void setText(String text){
 		textArea.setText(textArea.getText()+text);
 	}
 
+	/**
+	 * Clears the text field
+	 *
+	 */
 	public void clearTextField(){
 		textField.setText("");
 	}
 
+	/**
+	 * Clears the text area
+	 *
+	 */
 	public void clearTextArea(){
 		textArea.setText("");
 	}
 
+	/**
+	 * Returns the current string in the text field
+	 *
+	 * @return
+	 */
 	public String getTextField(){
 		return textField.getText();
 	}
 
+	/**
+	 * Toggles the text field to be editable
+	 *
+	 */
 	public void enableTextField(){
 		clearTextField();
 		textField.setEditable(!textField.isEditable());

@@ -111,7 +111,7 @@ public class Board {
 
 	}
 	/**
-	 * Returns the name of the room connected to the given one via stairs, or null if 
+	 * Returns the name of the room connected to the given one via stairs, or null if
 	 * the given string is invalid
 	 * @param currentRoom
 	 * @return
@@ -180,7 +180,7 @@ public class Board {
 					}
 				}
 			}
-			else{				
+			else{
 				if(checkMove(current,destination)){
 					if(destination instanceof RoomTile){
 						player.setCoordinate(getRoomStorage(((RoomTile) destination).roomName()));
@@ -302,23 +302,28 @@ public class Board {
 	public Set<String> availableActions(Character player, String lastAction) {
 
 		Set<String> actionsList = new HashSet<String>();
+		actionsList.add("Accuse");
+		actionsList.add("Pass");
+		actionsList.add("Roll");
+		actionsList.add("Suggest");
+		actionsList.add("Stairs");
 
 		if(lastAction == "Accuse"){
 			return actionsList;
 		}
 		//can always accuse or pass
-		actionsList.add("Accuse");
-		actionsList.add("Pass");
+		actionsList.remove("Accuse");
+		actionsList.remove("Pass");
 		// player is starting their turn
 		if (lastAction == null) {
 			if (tiles[player.getX()][player.getY()] instanceof RoomTile) {
-				actionsList.add("Roll");
-				actionsList.add("Suggest");
+				actionsList.remove("Roll");
+				actionsList.remove("Suggest");
 				if (((RoomTile) tiles[player.getX()][player.getY()]).hasStairs()){
-					actionsList.add("Stairs");
+					actionsList.remove("Stairs");
 				}
 			} else
-				actionsList.add("Roll");
+				actionsList.remove("Roll");
 
 		}
 		else if (lastAction == "Stairs") {
@@ -329,7 +334,7 @@ public class Board {
 		else {
 			if (tiles[player.getX()][player.getY()] instanceof RoomTile) {
 				if (lastAction.equals("Roll")) {
-					actionsList.add("Suggest");
+					actionsList.remove("Suggest");
 				}
 			}
 

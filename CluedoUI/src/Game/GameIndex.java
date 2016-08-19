@@ -59,6 +59,10 @@ public class GameIndex {
 		return deck;
 	}
 
+	public Set<Card> getMiddleCards(){
+		return middleCards;
+	}
+
 	/**
 	 * Prints out the rules for Cluedo and then explains what the ascii board is displaying.
 	 * It will also ask for the number of players that will be participating.
@@ -69,14 +73,15 @@ public class GameIndex {
 		int playerNumber = Integer.parseInt(frame.getSidePanel().getButtons().getButton("start", null));
 		String name ="", charr;
 
+		frame.getSidePanel().getText().setText("Please select a character\nand enter your name\n");
 		for(int i =0;i<playerNumber;i++){
 			String test = frame.getSidePanel().getButtons().getButton("characterSelect", passableActions);
-			
+
 			String Playercharacter[] = test.split(",");
 			name= Playercharacter[0];
 			charr= Playercharacter[1];
 			passableActions.add(charr);
-			
+
 			System.out.println("Output: " + name+"  "+charr+":");
 		}
 		for(BoardObject object: boardObjects){
@@ -87,13 +92,13 @@ public class GameIndex {
 				((Character) object).setPlayerName(name);
 			}
 		}
-		deck.deal(players(), players().size());		
+		deck.deal(players(), players().size());
 
 		//Testing allocation
 		for(Character c: players())
 			System.out.println(c.getName() + ": " + c.playerName());
 	}
-	
+
 	/**
 	 * Returns an image based on the given filename String
 	 * Throws and catches an IOException if no valid file is found
@@ -176,6 +181,16 @@ public class GameIndex {
 				characters.add((Character) object);
 		}
 		return characters;
+	}
+
+	/**
+	 * Eliminates the player from the game from a false accusation
+	 *
+	 * @param player
+	 */
+	public void eliminatePlayer(Character player){
+		boardObjects.remove(player);
+		System.err.println(player.getName() + " was eliminated");
 	}
 
 }

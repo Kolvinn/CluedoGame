@@ -16,6 +16,16 @@ import javax.swing.event.ChangeListener;
 
 import jComponents.TextBox;
 
+/**
+ * The button interface in the Game of Cluedo. It composes of sliders, buttons
+ * and radio buttons.
+ *
+ * It also contains a sleep() method that is used to allow a while(true) loop
+ * to not automatically time out while it's idle
+ *
+ * @author Ryan
+ *
+ */
 public class ButtonBox extends JPanel {
 
 	private JSlider playerSlider;
@@ -49,9 +59,6 @@ public class ButtonBox extends JPanel {
 	private String[] weaponNames = { "Candlestick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner" };
 
 	private String action = null;
-
-	private JButton[][] buttons = { actions, tokens, characters, rooms, weapons };
-	private String[][] buttonNames = { actionNames, tokenNames, characterNames, roomNames, weaponNames };
 
 	private boolean buttonPressed;
 
@@ -116,6 +123,7 @@ public class ButtonBox extends JPanel {
 		buttonPressed = false;
 
 		this.removeAll();
+		textBox.clearTextArea();
 		validate();
 
 		return playerSlider.getValue() + "";
@@ -156,8 +164,14 @@ public class ButtonBox extends JPanel {
 
 		validate();
 
-		while (!buttonPressed || textBox.getTextField().equals("")){
-			buttonPressed = false;
+		while (true){
+			if(buttonPressed && !textBox.getTextField().equals(""))
+				break;
+			else if(buttonPressed){
+				textBox.setText("Please enter your name\n");
+				buttonPressed = false;
+			}
+
 			sleep(100);
 		}
 
@@ -170,10 +184,12 @@ public class ButtonBox extends JPanel {
 			selection = buttonMenu.getSelection().getActionCommand();
 			name = textBox.getTextField();
 			buttonMenu.clearSelection();
-			textBox.setText(name + " as\n" + selection);
+			textBox.setText(name + " as\n" + selection + "\n");
 		} catch (NullPointerException e) {
-			textBox.setText("Please select a character");
+			textBox.setText("Please select a character\n");
 			sleep(1000);
+			this.removeAll();
+			textBox.enableTextField();
 			return enableCharacterSelect(values);
 		}
 
@@ -193,6 +209,7 @@ public class ButtonBox extends JPanel {
 	private String enableButtons(String array, Set<String> enabled) {
 		JButton[] buttons;
 		String[] buttonNames;
+		textBox.setText("Enabling " + array + "\n");
 
 		/*
 		 * Based on the 'array' string passed in, it determines which
@@ -246,7 +263,7 @@ public class ButtonBox extends JPanel {
 			else
 				return "failure detected";
 
-			if (enabled.contains(buttonNames[i]))
+			if (!enabled.contains(buttonNames[i]))
 				buttons[i].setEnabled(true);
 			else
 				buttons[i].setEnabled(false);
@@ -348,6 +365,7 @@ public class ButtonBox extends JPanel {
 		playerSlider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
+				textBox.clearTextArea();
 				textBox.setText("Players: " + playerSlider.getValue());
 			}
 		});

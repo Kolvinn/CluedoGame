@@ -1,19 +1,29 @@
 package jComponents;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import jFrame.ButtonBox;
 
+/**
+ * The right-side panel of the Game of Cluedo. It holds both the text field and
+ * the buttons and is only composes of the Graphical based input that the user is
+ * able to utilize.
+ *
+ * @author Ryan
+ *
+ */
 public class SidePanel extends JPanel {
-	
+
 	private TextBox textBox;
 	private ButtonBox buttonBox;
 
+	/**
+	 * The constructor for the Side Panel
+	 *
+	 */
 	public SidePanel(){
 		textBox = new TextBox();
 		buttonBox = new ButtonBox(textBox);
@@ -25,12 +35,22 @@ public class SidePanel extends JPanel {
 		setVisible(true);
 	}
 
+	/**
+	 * Returns the buttons section of the side panel
+	 *
+	 * @return
+	 */
 	public ButtonBox getButtons(){
 		return buttonBox;
 	}
-	
+
+	/**
+	 * Returns the text section of the side panel
+	 *
+	 * @return
+	 */
 	public TextBox getText(){
 		return textBox;
 	}
-	
+
 }

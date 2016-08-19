@@ -9,23 +9,25 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import jComponents.SidePanel;
+
 public class CFrame extends JFrame {
 	ArrayList<Component> components = new ArrayList<Component>();
-	private ButtonPanel sidePanel;
+	private SidePanel sidePanel;
 	private CardPanel cardPanel;
 	private BoardPanel cluedoPanel;
 	public CFrame(){
 
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);	
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new CWindowListener());
 		setBounds(0, 0, 1000, 1000);
 		setLayout(new BorderLayout());
 	}
 
 	public void add(Component comp, Object constraints){
-		if(comp instanceof ButtonPanel){
+		if(comp instanceof SidePanel){
 			System.out.println("side");
-			sidePanel = (ButtonPanel) comp;
+			sidePanel = (SidePanel) comp;
 		}
 		else if(comp instanceof CardPanel){
 			System.out.println("card");
@@ -38,7 +40,7 @@ public class CFrame extends JFrame {
 		//System.out.println(comp.getClass());
 		super.add(comp, constraints);
 	}
-	public ButtonPanel getSidePanel(){
+	public SidePanel getSidePanel(){
 		return sidePanel;
 	}
 	public BoardPanel getCluedoPanel(){

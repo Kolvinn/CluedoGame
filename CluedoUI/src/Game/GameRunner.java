@@ -3,24 +3,27 @@ package Game;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-
-
-
+import cards.Card;
 import jFrame.CFrame;
 
 import jComponents.Character;
 
-
+/**
+ * The class that handles all the game's executions and logic depending on the
+ * user input though the GUI.
+ *
+ * @author zhengzhon and Jeremy
+ *
+ */
 public class GameRunner implements KeyListener {
 
 	/**
 	 * The potential states of a running game
-	 *
-	 * @author zhengzhon
-	 *
 	 */
 	public enum GameState {
 		ONGOING, FINISHED
@@ -31,7 +34,7 @@ public class GameRunner implements KeyListener {
 	private GameState gameState = GameState.ONGOING;
 	private String lastAction=null;
 	private int moveCount;
-	
+
 	private GameIndex index;
 	private Board board;
 	private CFrame frame;
@@ -43,9 +46,9 @@ public class GameRunner implements KeyListener {
 		this.frame=frame;
 		this.index=index;
 		frame.addKeyListener(this);
-		frame.setFocusable(true);		
+		frame.setFocusable(true);
 
-		
+
 		playGame();
 
 	}
@@ -70,13 +73,13 @@ public class GameRunner implements KeyListener {
 					String buttonPressed = frame.getSidePanel().getButtons().getButton("actions", playerActions);
 					lastAction= buttonPressed;
 					executeAction(buttonPressed, player);
-					
-					frame.getSidePanel().getText().setText(player.playerName()+" successfully completed "+lastAction+"\n");				
+
+					frame.getSidePanel().getText().setText(player.playerName()+" successfully completed "+lastAction+"\n");
 				}
-				frame.getSidePanel().getText().setText("\n"+player.playerName()+"'s turn is over");
+				frame.getSidePanel().getText().setText("\n"+player.playerName()+"'s turn is over\n");
 			}
 	}
-	
+
 	private void executeAction(String action, Character player){
 		lastAction = action;
 		System.out.println(lastAction);
@@ -93,14 +96,16 @@ public class GameRunner implements KeyListener {
 			UseStairs(player);
 			hasActions=false;
 		case "Suggest":
-			//suggest();
+			suggest(player);
 			break;
 		case "Accuse":
+			accuse(player);
+			break;
 		}
 	}
 
 	private void UseStairs(Character player){
-		player.setCoordinate(board.getPassageCoordiantes(player));		
+		player.setCoordinate(board.getPassageCoordiantes(player));
 	}
 	/**
 	 * The player makes a suggestion where they select a Character and a Weapon.
@@ -112,10 +117,123 @@ public class GameRunner implements KeyListener {
 	 *
 	 * @throws InvalidGamePlay
 	 */
-	public void suggest() throws InvalidGamePlay {
+	public void suggest(Character player) {
+		Set<String> selectedTokens = new HashSet<String>();
 
+		// Allow the player to determine their suggestion
+		while (selectedTokens.size() < 6) {
+			String buttonPressed = frame.getSidePanel().getButtons().getButton("tokens", selectedTokens);
+
+			System.out.println(buttonPressed);
+			selectedTokens.add(buttonPressed);
+
+			if (buttonPressed.equals("Character"))
+				buttonPressed = frame.getSidePanel().getButtons().getButton("characters", selectedTokens);
+			else if (buttonPressed.equals("Room"))
+				buttonPressed = frame.getSidePanel().getButtons().getButton("rooms", selectedTokens);
+			else if (buttonPressed.equals("Weapon"))
+				buttonPressed = frame.getSidePanel().getButtons().getButton("weapons", selectedTokens);
+			else
+				System.err.println("Error encountered");
+
+			System.out.println(buttonPressed);
+			selectedTokens.add(buttonPressed);
+			frame.getSidePanel().getText().setText("Suggesting: " + buttonPressed + "\n");
+		}
+
+		frame.getSidePanel().getText().setText("Suggestion has been made\n");
+
+		/*
+		 * Allow other players to refute the player's suggestion based on the
+		 * conflicting cards in their hand (if they do conflict)
+		 */
+		Set<String> refuted = new HashSet<String>();
+		Map<Character, Set<String>> refuteCards = new HashMap<Character, Set<String>>();
+		for (Character pc : index.players()) {
+			for (Card card : pc.hand())
+				if (selectedTokens.contains(card.name())) {
+					refuted.add(card.name());
+					refuteCards.put(pc, refuted);
+				}
+			refuted.clear();
+		}
+
+		if (!refuteCards.isEmpty()) {
+			String refutedCard = null;
+			for (Map.Entry<Character, Set<String>> entry : refuteCards.entrySet()) {
+				if (entry.getValue().size() == 1)
+					refutedCard = (String) entry.getValue().toArray()[0];
+				else
+					for (String card : entry.getValue()) {
+						/*
+						 * The player has more than one refuted card so they
+						 * must choose which card they will want to show
+						 */
+					}
+			}
+
+		}
 
 	}
+
+	/**
+	 * The accusing play. This is an ultimatum where if all 3 accused cards
+	 * matches the cards in the middle room, the game ends on the spot and the
+	 * player wins. Else the player has made a false accusation and is
+	 * immediately removed from the game. Even though they are 'eliminated',
+	 * they are still in the game and are required to display conflicting cards.
+	 * Accusations can be made at any point of their turn
+	 *
+	 */
+	public void accuse(Character player) {
+		Set<String> selectedTokens = new HashSet<String>();
+
+		// Allow the player to determine their suggestion
+		while (selectedTokens.size() < 6) {
+			String buttonPressed = frame.getSidePanel().getButtons().getButton("tokens", selectedTokens);
+
+			System.out.println(buttonPressed);
+			selectedTokens.add(buttonPressed);
+			if (buttonPressed.equals("Character")) {
+				buttonPressed = frame.getSidePanel().getButtons().getButton("characters", selectedTokens);
+
+			} else if (buttonPressed.equals("Room")) {
+				buttonPressed = frame.getSidePanel().getButtons().getButton("rooms", selectedTokens);
+
+			} else if (buttonPressed.equals("Weapon")) {
+				buttonPressed = frame.getSidePanel().getButtons().getButton("weapons", selectedTokens);
+
+			} else {
+				System.err.println("Error encountered");
+			}
+			System.out.println(buttonPressed);
+			selectedTokens.add(buttonPressed);
+			frame.getSidePanel().getText().setText("Suggestion: " + buttonPressed + "\n");
+		}
+
+		// Determines whether or not the accusation was correct
+		boolean victory = true;
+		Set<String> middleCards = new HashSet<String>();
+		for(Card card : index.getMiddleCards())
+			middleCards.add(card.name());
+
+		if(!selectedTokens.containsAll(middleCards))
+			victory = false;
+
+		if(victory){
+			win();
+		}
+		else{
+			index.eliminatePlayer(player);
+
+		}
+
+	}
+
+	/**
+	 * Prepares the move for the player by rolling two die
+	 *
+	 */
 
 	private void prepareMove(){
 		moveCount = (int) (Math.random() * 10 + 3);
