@@ -9,6 +9,12 @@ import javax.swing.JMenuItem;
 
 import main.Main;
 
+/**
+ * The menu bar frame for the game of cluedo
+ * 
+ * @author Ryan
+ *
+ */
 public class MenuBox extends JMenuBar{
 
 	JMenuBar menuBar;
@@ -16,6 +22,12 @@ public class MenuBox extends JMenuBar{
 	JMenuItem insult1, insult2, insult3, insult4, insult5;
 	TextBox textBox;
 	
+	/**
+	 * The Menu Box holds tools and powerful verbal spells that can
+	 * drastically alter a game's scenario
+	 * 
+	 * @param text
+	 */
 	public MenuBox(TextBox text) {
 		textBox = text;
 		menuBar = new JMenuBar();
