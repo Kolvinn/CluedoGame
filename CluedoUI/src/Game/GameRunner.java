@@ -104,6 +104,7 @@ public class GameRunner implements KeyListener {
 			prepareMove();
 			System.out.println("Moving");
 			while(!completedMove){
+				sleep(100);
 			}
 			break;
 		case "Pass":
@@ -307,6 +308,19 @@ public class GameRunner implements KeyListener {
 	}
 	@Override
 	public void keyTyped(KeyEvent arg0) {
+	}
+	
+	/**
+	 * To allow the while loops to not automatically time out
+	 *
+	 * @param mils
+	 */
+	private void sleep(int mils) {
+		try {
+			Thread.sleep(mils);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
