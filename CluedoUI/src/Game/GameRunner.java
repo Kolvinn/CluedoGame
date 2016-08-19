@@ -41,6 +41,15 @@ public class GameRunner implements KeyListener {
 	private Character  currentPlayer;
 	private boolean completedMove= false;
 	private boolean hasActions = true;
+
+	/**
+	 * The GameRunner constructor takes in a board, the Cluedo window frame and
+	 * the game index status. It also runs the game itself after setting up the fields.
+	 *
+	 * @param board
+	 * @param frame
+	 * @param index
+	 */
 	public GameRunner(Board board, CFrame frame, GameIndex index){
 		this.board = board;
 		this.frame=frame;
@@ -54,7 +63,8 @@ public class GameRunner implements KeyListener {
 	}
 
 	/**
-	 * Runs the game. Ends when all players have been eliminated or the murderer has been correctly identified
+	 * Runs the game. Ends when all players have been eliminated
+	 * or the murderer has been correctly identified
 	 *
 	 */
 	private void playGame() {
@@ -80,12 +90,19 @@ public class GameRunner implements KeyListener {
 			}
 	}
 
+	/**
+	 * Executes the selected action for the player
+	 *
+	 * @param action
+	 * @param player
+	 */
 	private void executeAction(String action, Character player){
 		lastAction = action;
 		System.out.println(lastAction);
 		switch (action){
 		case("Roll"):
 			prepareMove();
+			System.out.println("Moving");
 			while(!completedMove){
 			}
 			break;
@@ -102,11 +119,18 @@ public class GameRunner implements KeyListener {
 			accuse(player);
 			break;
 		}
+		System.out.println("End sequence");
 	}
 
+	/**
+	 * Performs the use stairs action on the specified player
+	 *
+	 * @param player
+	 */
 	private void UseStairs(Character player){
 		player.setCoordinate(board.getPassageCoordiantes(player));
 	}
+
 	/**
 	 * The player makes a suggestion where they select a Character and a Weapon.
 	 * If any of the players has a matching Character, Weapon or Room card that
@@ -115,13 +139,14 @@ public class GameRunner implements KeyListener {
 	 * conflicting cards, they can select which one to display. Suggestions must
 	 * be done in a room
 	 *
-	 * @throws InvalidGamePlay
 	 */
 	public void suggest(Character player) {
 		Set<String> selectedTokens = new HashSet<String>();
 
 		// Allow the player to determine their suggestion
 		while (selectedTokens.size() < 6) {
+			selectedTokens.add("Room");
+			selectedTokens.add(board.roomName(player.getX(), player.getY()));
 			String buttonPressed = frame.getSidePanel().getButtons().getButton("tokens", selectedTokens);
 
 			System.out.println(buttonPressed);
@@ -129,8 +154,6 @@ public class GameRunner implements KeyListener {
 
 			if (buttonPressed.equals("Character"))
 				buttonPressed = frame.getSidePanel().getButtons().getButton("characters", selectedTokens);
-			else if (buttonPressed.equals("Room"))
-				buttonPressed = frame.getSidePanel().getButtons().getButton("rooms", selectedTokens);
 			else if (buttonPressed.equals("Weapon"))
 				buttonPressed = frame.getSidePanel().getButtons().getButton("weapons", selectedTokens);
 			else
@@ -220,13 +243,10 @@ public class GameRunner implements KeyListener {
 		if(!selectedTokens.containsAll(middleCards))
 			victory = false;
 
-		if(victory){
+		if(victory)
 			win();
-		}
-		else{
+		else
 			index.eliminatePlayer(player);
-
-		}
 
 	}
 
