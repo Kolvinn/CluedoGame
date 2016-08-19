@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import Game.Board;
 import Game.GameIndex;
 import Game.GameRunner;
+import jComponents.MenuBox;
 import jComponents.SidePanel;
 import jFrame.BoardPanel;
 import jFrame.CFrame;
@@ -24,7 +25,9 @@ public class Main {
 	public static void main (String args[]){
 		CFrame frame = new CFrame();
 		GameIndex game = new GameIndex();
-
+		
+		//create the Menu bar
+		
 		//create the jpanel that stores the gameboard
 		frame.add(new BoardPanel(game.getImage("finalBoard.png"), game.boardObjects()));
 		//the board that is used for player movement logic
@@ -33,11 +36,12 @@ public class Main {
 		//the jpanel used for all player interactions
 		SidePanel buttonPanel = new SidePanel();
 		frame.add(buttonPanel, BorderLayout.EAST);
+		frame.add(new MenuBox(buttonPanel.getText()),BorderLayout.NORTH);
 
 		frame.add(new CardPanel(game.cardDeck()), BorderLayout.SOUTH);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-
+		
 		game.createStartingPlayers(frame);
 		GameRunner gameRunner = new GameRunner(board, frame, game);
 	}

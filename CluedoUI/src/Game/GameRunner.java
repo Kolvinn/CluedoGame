@@ -115,6 +115,7 @@ public class GameRunner implements KeyListener, MouseListener {
 			while (!completedMove) {
 				sleep(100);
 			}
+			completedMove = false;
 			break;
 		case "Pass":
 			hasActions = false;
@@ -297,7 +298,7 @@ public class GameRunner implements KeyListener, MouseListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-
+		
 		if (lastAction == "Roll" && moveCount != 0) {
 			System.out.println("is inside key pressed, moveCOunt: " + moveCount);
 			int code = e.getKeyCode();
@@ -315,7 +316,7 @@ public class GameRunner implements KeyListener, MouseListener {
 			moveCount = board.movePlayer(x, y, currentPlayer, moveCount);
 			if (moveCount == 0) {
 				completedMove = true;
-				System.out.println("Move completed");
+				System.out.println("Move completed, Last action: " + lastAction);
 			}
 			frame.getSidePanel().getText().setText(moveCount + " moves left\n");
 			System.out.println(moveCount);
