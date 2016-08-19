@@ -17,8 +17,6 @@ import jComponents.Character;
  *
  */
 public class Board {
-	/// lets see if anything has changed at all
-
 	String boardString;
 	// Map<Integer, Location> valueToLocation = new HashMap<Integer,
 	// Location>();

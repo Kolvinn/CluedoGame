@@ -2,6 +2,8 @@ package Game;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,7 +21,7 @@ import jComponents.Character;
  * @author zhengzhon and Jeremy
  *
  */
-public class GameRunner implements KeyListener {
+public class GameRunner implements KeyListener, MouseListener {
 
 	/**
 	 * The potential states of a running game
@@ -38,7 +40,7 @@ public class GameRunner implements KeyListener {
 	private Board board;
 	private CFrame frame;
 	private Character currentPlayer;
-	private boolean completedMove = false;
+	private boolean completedMove = false, selectedCard =false;
 	private boolean hasActions = true;
 
 	/**
@@ -179,31 +181,45 @@ public class GameRunner implements KeyListener {
 		 * Allow other players to refute the player's suggestion based on the
 		 * conflicting cards in their hand (if they do conflict)
 		 */
-		Set<String> refuted = new HashSet<String>();
-		Map<Character, Set<String>> refuteCards = new HashMap<Character, Set<String>>();
+		Set<Card> refuted = new HashSet<Card>();
+		Map<Character, Set<Card>> refuteCards = new HashMap<Character, Set<Card>>();
 		for (Character pc : index.players()) {
-			for (Card card : pc.hand())
-				if (selectedTokens.contains(card.name())) {
-					refuted.add(card.name());
-					refuteCards.put(pc, refuted);
+			//checking for all player apart from current
+			//TODO 
+			//Need to fix cards being recognized because some are missing
+			if(!pc.equals(currentPlayer)){
+				for (Card card : pc.hand()){
+					if (selectedTokens.contains(card.name())) {
+						System.out.println("THE SELECTED CARDS  : "+card);
+						refuted.add(card);   //getting all cards that match selected suggest cards
+					}
 				}
-			refuted.clear();
+				refuteCards.put(pc, refuted);
+				refuted.clear();
+			}
 		}
 
 		if (!refuteCards.isEmpty()) {
 			String refutedCard = null;
-			for (Map.Entry<Character, Set<String>> entry : refuteCards.entrySet()) {
-				if (entry.getValue().size() == 1)
-					refutedCard = (String) entry.getValue().toArray()[0];
-				else
-					for (String card : entry.getValue()) {
-						/*
-						 * The player has more than one refuted card so they
-						 * must choose which card they will want to show
-						 */
-					}
+			for (Map.Entry<Character, Set<Card>> entry : refuteCards.entrySet()) {
+				frame.getCardPanel().setCurrentPlayer(entry.getKey());
+				frame.getCardPanel().setSuggestCards(entry.getValue());
+				frame.getSidePanel().getText().setText("\nPlease pick a card to show");
+				frame.repaint();
+				//while the player has not selected the card
+				while(!selectedCard){
+					//System.out.println("is in ther");
+					sleep(100);
+				}
+				sleep(3000);
+				selectedCard=false;
+				frame.getCardPanel().hasSuggested(false);
+				
 			}
-
+		}
+		else{
+			frame.getSidePanel().getText().setText("\n\n***No cards to show!!***\n\n");
+			
 		}
 
 	}
@@ -317,6 +333,33 @@ public class GameRunner implements KeyListener {
 	public void keyTyped(KeyEvent arg0) {
 	}
 
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		for(Card c : frame.getCardPanel().getSuggestCards()){
+			if(c.getRectangle().contains(e.getPoint()))
+				selectedCard=true;
+				frame.getCardPanel().hasSuggested(true);
+				frame.getCardPanel().getSuggestCards().clear();
+				frame.getCardPanel().getSuggestCards().add(c);			
+		}
+			
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {		
+	}
 	/**
 	 * To allow the while loops to not automatically time out
 	 *

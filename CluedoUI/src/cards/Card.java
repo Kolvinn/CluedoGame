@@ -1,6 +1,7 @@
 package cards;
 
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 /**
@@ -14,6 +15,7 @@ public class Card {
 	
 	BufferedImage image;
 	private String name;
+	private Rectangle rec;
 
 	public Card(String name, BufferedImage  image) {
 		this.name = name;
@@ -30,6 +32,12 @@ public class Card {
 	public boolean equals(Object o) {
 		return ((Card) o).name().toLowerCase().equals(name.toLowerCase());
 
+	}
+	public void setRectangle(int x, int y, int width, int height){
+		rec = new Rectangle(x,y,width,height);
+	}
+	public Rectangle getRectangle(){
+		return rec;
 	}
 
 	/**

@@ -3,6 +3,7 @@ package jFrame;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.Set;
 
 import javax.swing.JPanel;
 
@@ -22,6 +23,8 @@ public class CardPanel extends JPanel {
 	private CardDeck deck;
 	private Character player;
 	private int Y = 30, width = 120, height = 160;
+	private Set<Card> suggestedCards=null;
+	private boolean hasSuggested;
 
 	/**
 	 * Constructor for the card panel. It receives the whole deck of the game
@@ -41,6 +44,9 @@ public class CardPanel extends JPanel {
 	public void setCurrentPlayer(Character player) {
 		this.player = player;
 	}
+	public void hasSuggested(boolean sug){
+		hasSuggested=sug;
+	}
 
 	/**
 	 * Sets the size of the panel
@@ -49,6 +55,12 @@ public class CardPanel extends JPanel {
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(1000, 210);
+	}
+	public void setSuggestCards(Set<Card> suggestedCards){
+		this.suggestedCards=suggestedCards;
+	}
+	public Set<Card> getSuggestCards(){
+		return this.suggestedCards;
 	}
 
 	/**
@@ -73,33 +85,52 @@ public class CardPanel extends JPanel {
 				val = (int) (1.5 * width);
 			else
 				val = (int) (0.8 * width);
-
 			g.setFont(new Font("TimesRoman", Font.HANGING_BASELINE, 20));
-			g.drawString(player.playerName() + "'s (" + player.getName() + ") Hand", val, 20);
-			for (Card card : player.hand()) {
-				g.drawImage(card.image(), x, Y, width, height, this);
-				x += width + 5; // or whatever the card width is
-			}
+			//normal players turn
+			if(suggestedCards==null){
+				g.drawString(player.playerName() + "'s (" + player.getName() + ") Hand", val, 20);
+				for (Card card : player.hand()) {
 
-			/*
-			 * Determines the for where the 'Known cards' string will be
-			 * placed. If there are no known cards, the method will stop here
-			 */
-			if (deck.leftOverCards().size() == 0)
-				return;
-			else if(deck.leftOverCards().size() == 2){
-				x = player.hand().size() * width + (int)(width * 1.5);
-				val = 6 * width;
-			}
-			else{
-				x = (player.hand().size() + 1) * width + width/2;
-				val = (int) (5.5 * width);
-			}
+					g.drawImage(card.image(), x, Y, width, height, this);
+					card.setRectangle(x, Y, width, height);
+					x += width + 5; // or whatever the card width is
+				}
+				/*
+				 * Determines the for where the 'Known cards' string will be
+				 * placed. If there are no known cards, the method will stop here
+				 */
+				if (deck.leftOverCards().size() == 0)
+					return;
+				else if(deck.leftOverCards().size() == 2){
+					x = player.hand().size() * width + (int)(width * 1.5);
+					val = 6 * width;
+				}
+				else{
+					x = (player.hand().size() + 1) * width + width/2;
+					val = (int) (5.5 * width);
+				}
 
-			g.drawString("Shown Cards", val, 20);
-			for (Card card : deck.leftOverCards()) {
-				g.drawImage(card.image(), x, Y, width, height, this);
-				x += width + 5;
+				g.drawString("Shown Cards", val, 20);
+				for (Card card : deck.leftOverCards()) {
+					g.drawImage(card.image(), x, Y, width, height, this);
+					card.setRectangle(x, Y, width, height);
+					x += width + 5;
+				}
+			}
+			//time to choose suggestion cards
+			else {
+				System.out.println(player.hand());
+				System.out.println(suggestedCards);
+				System.out.println("is supposed to be drawing some other cards pls");
+				if(!hasSuggested)
+					g.drawString(player.playerName() + " (" + player.getName() + ") Please Select a card to show", val, 20);
+				else
+					g.drawString(player.playerName() + " (" + player.getName() + ") was holding onto the card...", val, 20);
+				for(Card card :suggestedCards){
+					g.drawImage(card.image(), x, Y, width, height, this);
+					card.setRectangle(x, Y, width, height);
+					x += width + 5; // or whatever the card width is
+				}
 			}
 
 		}
