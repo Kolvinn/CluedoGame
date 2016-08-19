@@ -342,14 +342,16 @@ public class Board {
 			} else
 				actionsList.remove("Roll");
 
-		} else if (lastAction == "Stairs") {
+		} else if (lastAction == "Stairs")
 			// end of turn if they have taken the stairs
-			actionsList.removeAll(actionsList);
-		}
+			actionsList.addAll(actionsList);
 		// player is currently in turn
 		else {
+			System.out.println("Last move is not null or stairs");
 			if (tiles[player.getX()][player.getY()] instanceof RoomTile) {
+				System.out.println("Player is in Room Tile");
 				if (lastAction.equals("Roll")) {
+					System.out.println("Suggest has been added");
 					actionsList.remove("Suggest");
 				}
 			}

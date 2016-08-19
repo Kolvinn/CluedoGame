@@ -1,6 +1,5 @@
 package Game;
 
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
@@ -32,62 +31,70 @@ public class GameRunner implements KeyListener {
 
 	private String[] actions = { "Pass", "Roll", "Suggest", "Accuse", "Stairs" };
 	private GameState gameState = GameState.ONGOING;
-	private String lastAction=null;
+	private String lastAction = null;
 	private int moveCount;
 
 	private GameIndex index;
 	private Board board;
 	private CFrame frame;
-	private Character  currentPlayer;
-	private boolean completedMove= false;
+	private Character currentPlayer;
+	private boolean completedMove = false;
 	private boolean hasActions = true;
 
 	/**
 	 * The GameRunner constructor takes in a board, the Cluedo window frame and
-	 * the game index status. It also runs the game itself after setting up the fields.
+	 * the game index status. It also runs the game itself after setting up the
+	 * fields.
 	 *
 	 * @param board
 	 * @param frame
 	 * @param index
 	 */
-	public GameRunner(Board board, CFrame frame, GameIndex index){
+	public GameRunner(Board board, CFrame frame, GameIndex index) {
 		this.board = board;
-		this.frame=frame;
-		this.index=index;
+		this.frame = frame;
+		this.index = index;
 		frame.addKeyListener(this);
 		frame.setFocusable(true);
-
 
 		playGame();
 
 	}
 
 	/**
-	 * Runs the game. Ends when all players have been eliminated
-	 * or the murderer has been correctly identified
+	 * Runs the game. Ends when all players have been eliminated or the murderer
+	 * has been correctly identified
 	 *
 	 */
 	private void playGame() {
 
-			for(Character player: index.players()){
-				//start of players turn
-				Set<String> playerActions = board.availableActions(player, lastAction);
-				while(hasActions){
-					frame.getSidePanel().getText().setText("\n\n***"+player.playerName()+"'s turn!***\n\nPlease Select an Action Button\n");
-					//deals the hand for the current player
-					frame.getCardPanel().setCurrentPlayer(player);
+		while (!index.hasEnded())
+			for (Character player : index.players()) {
+				currentPlayer = player;
+				// start of players turn
+				Set<String> playerActions;
+				while (hasActions) {
+					playerActions = board.availableActions(currentPlayer, lastAction);
+					frame.getSidePanel().getText().setText(
+							"\n\n***" + currentPlayer.playerName() + "'s turn!***\n\nPlease Select an Action Button\n");
+					// deals the hand for the current player
+					frame.getCardPanel().setCurrentPlayer(currentPlayer);
 					frame.repaint();
 
-					currentPlayer = player;
-					//get button and perform action
+					// get button and perform action
 					String buttonPressed = frame.getSidePanel().getButtons().getButton("actions", playerActions);
-					lastAction= buttonPressed;
-					executeAction(buttonPressed, player);
+					lastAction = buttonPressed;
+					executeAction(buttonPressed, currentPlayer);
 
-					frame.getSidePanel().getText().setText(player.playerName()+" successfully completed "+lastAction+"\n");
+					frame.getSidePanel().getText()
+							.setText(currentPlayer.playerName() + " successfully\ncompleted " + lastAction + "\n");
 				}
-				frame.getSidePanel().getText().setText("\n"+player.playerName()+"'s turn is over\n");
+				frame.getSidePanel().getText().setText("\n" + currentPlayer.playerName() + "'s turn is over\n");
+				lastAction = null;
+				hasActions = true;
 			}
+
+		frame.getSidePanel().getText().setText("\nEND GAME\n");
 	}
 
 	/**
@@ -96,23 +103,23 @@ public class GameRunner implements KeyListener {
 	 * @param action
 	 * @param player
 	 */
-	private void executeAction(String action, Character player){
+	private void executeAction(String action, Character player) {
 		lastAction = action;
 		System.out.println(lastAction);
-		switch (action){
-		case("Roll"):
+		switch (action) {
+		case ("Roll"):
 			prepareMove();
 			System.out.println("Moving");
-			while(!completedMove){
+			while (!completedMove) {
 				sleep(100);
 			}
 			break;
 		case "Pass":
-			hasActions =false;
+			hasActions = false;
 			break;
 		case "Stairs":
 			UseStairs(player);
-			hasActions=false;
+			hasActions = false;
 			break;
 		case "Suggest":
 			suggest(player);
@@ -129,7 +136,7 @@ public class GameRunner implements KeyListener {
 	 *
 	 * @param player
 	 */
-	private void UseStairs(Character player){
+	private void UseStairs(Character player) {
 		player.setCoordinate(board.getPassageCoordiantes(player));
 	}
 
@@ -239,13 +246,13 @@ public class GameRunner implements KeyListener {
 		// Determines whether or not the accusation was correct
 		boolean victory = true;
 		Set<String> middleCards = new HashSet<String>();
-		for(Card card : index.getMiddleCards())
+		for (Card card : index.getMiddleCards())
 			middleCards.add(card.name());
 
-		if(!selectedTokens.containsAll(middleCards))
+		if (!selectedTokens.containsAll(middleCards))
 			victory = false;
 
-		if(victory)
+		if (victory)
 			win();
 		else
 			index.eliminatePlayer(player);
@@ -257,59 +264,59 @@ public class GameRunner implements KeyListener {
 	 *
 	 */
 
-	private void prepareMove(){
+	private void prepareMove() {
 		moveCount = (int) (Math.random() * 10 + 3);
-		frame.getSidePanel().getText().setText(currentPlayer.playerName()+" has rolled a "+moveCount+"\n\nPlease use the directional pad \nto move to your desired square");
+		frame.getSidePanel().getText().setText(currentPlayer.playerName() + " has rolled a " + moveCount
+				+ "\n\nPlease use the directional pad \nto move to your desired square\n");
 	}
 
 	/**
-	 * Sets the game condition as "Finished". Is called by a successful accuse move
+	 * Sets the game condition as "Finished". Is called by a successful accuse
+	 * move
 	 *
 	 */
-	public void win(){
+	public void win() {
 		gameState = GameState.FINISHED;
 	}
 
-
 	@Override
-	public void keyPressed(KeyEvent e){
+	public void keyPressed(KeyEvent e) {
 
-		if(lastAction=="Roll" && moveCount!=0){
-			System.out.println("is inside key pressed, moveCOunt: "+moveCount);
+		if (lastAction == "Roll" && moveCount != 0) {
+			System.out.println("is inside key pressed, moveCOunt: " + moveCount);
 			int code = e.getKeyCode();
-			int x=0,y=0;
-			if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_KP_RIGHT) {
+			int x = 0, y = 0;
+			if (code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_KP_RIGHT) {
 				x = 1;
-			}
-			else if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_KP_LEFT) {
+			} else if (code == KeyEvent.VK_LEFT || code == KeyEvent.VK_KP_LEFT) {
 				x = -1;
+			} else if (code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_UP) {
+				y = 1;
+			} else if (code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP) {
+				y = -1;
 			}
-			else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_UP) {
-				y=1;
-			}
-			else if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP) {
-				y=-1;
-			}
-			//move was successful
-			moveCount = board.movePlayer(x,y, currentPlayer, moveCount);
-			if(moveCount==0){
-				completedMove=true;
+			// move was successful
+			moveCount = board.movePlayer(x, y, currentPlayer, moveCount);
+			if (moveCount == 0) {
+				completedMove = true;
 				System.out.println("Move completed");
 			}
-			frame.getSidePanel().getText().setText(moveCount+" moves left\n");
+			frame.getSidePanel().getText().setText(moveCount + " moves left\n");
 			System.out.println(moveCount);
 			frame.repaint();
 
 		}
 
 	}
+
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 	}
+
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 	}
-	
+
 	/**
 	 * To allow the while loops to not automatically time out
 	 *
@@ -324,4 +331,3 @@ public class GameRunner implements KeyListener {
 	}
 
 }
-

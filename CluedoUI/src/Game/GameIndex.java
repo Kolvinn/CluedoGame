@@ -4,9 +4,9 @@ package Game;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.util.HashMap;
 import java.util.HashSet;
-
+import java.util.Map;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -63,6 +63,10 @@ public class GameIndex {
 		return middleCards;
 	}
 
+	public boolean hasEnded(){
+		return state == GameState.FINISHED;
+	}
+
 	/**
 	 * Prints out the rules for Cluedo and then explains what the ascii board is displaying.
 	 * It will also ask for the number of players that will be participating.
@@ -72,7 +76,8 @@ public class GameIndex {
 		Set<String> passableActions = new HashSet<String>();
 		int playerNumber = Integer.parseInt(frame.getSidePanel().getButtons().getButton("start", null));
 		String name ="", charr;
-
+		Map<String, String> pc = new HashMap<String, String>();
+		
 		frame.getSidePanel().getText().setText("Please select a character\nand enter your name\n");
 		for(int i =0;i<playerNumber;i++){
 			String test = frame.getSidePanel().getButtons().getButton("characterSelect", passableActions);
@@ -81,17 +86,21 @@ public class GameIndex {
 			name= Playercharacter[0];
 			charr= Playercharacter[1];
 			passableActions.add(charr);
+			
+			pc.put(charr, name);
 
-			System.out.println("Output: " + name+"  "+charr+":");
+			System.out.println("Output: " + name+" : "+charr);
 		}
+		
 		for(BoardObject object: boardObjects){
 			System.out.println(object.getName() +"    "+passableActions);
 			if(object instanceof Character && passableActions.contains(object.getName())){
 				System.out.println(object.getName());
 				((Character) object).setAsPlayer();
-				((Character) object).setPlayerName(name);
+				((Character) object).setPlayerName(pc.get(object.getName()));
 			}
 		}
+		
 		deck.deal(players(), players().size());
 
 		//Testing allocation
