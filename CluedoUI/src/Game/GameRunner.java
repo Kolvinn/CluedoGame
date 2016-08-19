@@ -112,6 +112,7 @@ public class GameRunner implements KeyListener {
 		case "Stairs":
 			UseStairs(player);
 			hasActions=false;
+			break;
 		case "Suggest":
 			suggest(player);
 			break;
@@ -292,6 +293,7 @@ public class GameRunner implements KeyListener {
 			moveCount = board.movePlayer(x,y, currentPlayer, moveCount);
 			if(moveCount==0){
 				completedMove=true;
+				System.out.println("Move completed");
 			}
 			frame.getSidePanel().getText().setText(moveCount+" moves left\n");
 			System.out.println(moveCount);
