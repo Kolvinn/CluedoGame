@@ -61,8 +61,10 @@ public class GameRunner implements KeyListener, MouseListener {
 		this.index = index;
 		frame.addKeyListener(this);
 		frame.setFocusable(true);
+		frame.getBoardPanel().setFocusable(true);
+		frame.getBoardPanel().addMouseListener(this);
 		frame.addMouseListener(this);
-
+		frame.getBoardPanel().setToolTipText("The game board");
 		playGame();
 
 	}
@@ -73,7 +75,7 @@ public class GameRunner implements KeyListener, MouseListener {
 	 *
 	 */
 	private void playGame() {
-
+		
 		while (!index.hasEnded())
 			for (Character player : index.players()) {
 				currentPlayer = player;

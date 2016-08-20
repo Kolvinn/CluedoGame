@@ -30,7 +30,7 @@ public class Main {
 		//create the Menu bar
 		
 		//create the jpanel that stores the gameboard
-		frame.add(new BoardPanel(game.getImage("xboardObjects/finalBoard.png"), game.boardObjects()));
+		frame.add(new BoardPanel(game.getImage("xboardObjects/finalBoard.png"), game.boardObjects()),BorderLayout.WEST);
 		//the board that is used for player movement logic
 		Board board = new Board(game.boardObjects());
 
@@ -42,7 +42,6 @@ public class Main {
 		frame.add(new CardPanel(game.cardDeck()), BorderLayout.SOUTH);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		
 		game.createStartingPlayers(frame);
 		GameRunner gameRunner = new GameRunner(board, frame, game);
 	}

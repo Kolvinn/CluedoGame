@@ -15,7 +15,7 @@ public class CFrame extends JFrame {
 	ArrayList<Component> components = new ArrayList<Component>();
 	private SidePanel sidePanel;
 	private CardPanel cardPanel;
-	private BoardPanel cluedoPanel;
+	private BoardPanel boardPanel;
 	public CFrame(){
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -35,7 +35,7 @@ public class CFrame extends JFrame {
 		}
 		else if(comp instanceof BoardPanel){
 			System.out.println("cluedo");
-			cluedoPanel= (BoardPanel) comp;
+			boardPanel= (BoardPanel) comp;
 		}
 		//System.out.println(comp.getClass());
 		super.add(comp, constraints);
@@ -43,8 +43,8 @@ public class CFrame extends JFrame {
 	public SidePanel getSidePanel(){
 		return sidePanel;
 	}
-	public BoardPanel getCluedoPanel(){
-		return cluedoPanel;
+	public BoardPanel getBoardPanel(){
+		return boardPanel;
 	}
 	public CardPanel getCardPanel(){
 		return cardPanel;

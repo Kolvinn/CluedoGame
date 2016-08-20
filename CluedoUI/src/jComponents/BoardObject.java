@@ -10,7 +10,7 @@ import javax.swing.JComponent;
 import Game.Coordinate;
 
 /**
- * The board Object superclass that is extened by all the entities on the cluedo
+ * The board Object superclass that is extended by all the entities on the cluedo
  * game board
  *
  * @author Jeremy

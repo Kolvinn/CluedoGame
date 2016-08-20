@@ -18,9 +18,6 @@ import jComponents.Character;
  */
 public class Board {
 	String boardString;
-	// Map<Integer, Location> valueToLocation = new HashMap<Integer,
-	// Location>();
-	// Map<String, Player> players = new HashMap<String, Player>();
 	Set<BoardObject> boardObjects = new HashSet<BoardObject>();
 	Tile[][] tiles = new Tile[24][25];
 
@@ -29,7 +26,12 @@ public class Board {
 		boardString = BoardIndex.boardString;
 		createBoard();
 	}
-
+	/**
+	 * Returns the name of a room assuming the x,y point is within a valid room
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public String roomName(int x, int y){
 		return ((RoomTile)tiles[x][y]).roomName();
 	}
@@ -107,9 +109,6 @@ public class Board {
 				roomExits.add(coo);
 		}
 		return roomExits;
-	}
-	public String getRoomName(Character player){
-		return ((RoomTile)tiles[player.getX()][player.getY()]).roomName();
 	}
 
 	/**
@@ -211,7 +210,6 @@ public class Board {
 		}
 		return moveCount;
 	}
-
 	/**
 	 * Returns true if given x and y coordinates are within the board
 	 *
@@ -234,15 +232,11 @@ public class Board {
 	public void createBoard() {
 		String[] strings = boardString.split(",");
 		for (String s : strings) {
-
 			// if the signal is for room, create a new Room because the parsed
 			// roomString has a different code to
 			// the rest of the stored locations
 			if (s.charAt(0) == 'R') {
 				createRoom(s.substring(1));
-				// int location =
-				// Integer.parseInt(s.substring(room.name().length() +
-				// room.boardCode().length() + 1));
 			} // else create a new location
 			else {
 				int location = Integer.parseInt(s.substring(4));
@@ -286,7 +280,12 @@ public class Board {
 		setRoomTile(location, roomName, entrance);
 		// return new Room(boardCode, location, roomName, entrance);
 	}
-
+	/**
+	 * Creates a room tile in the game
+	 * @param location
+	 * @param roomName
+	 * @param entrance
+	 */
 	private void setRoomTile(int location, String roomName, boolean entrance) {
 		if (location == 0)
 			tiles[0][0] = new RoomTile(false, roomName, entrance);
@@ -296,7 +295,11 @@ public class Board {
 			tiles[x][y] = new RoomTile(false, roomName, entrance);
 		}
 	}
-
+	/**
+	 * Creates a tile in game
+	 * @param location
+	 * @param impassable
+	 */
 	private void setTile(int location, boolean impassable) {
 		if (location == 0)
 			tiles[0][0] = new Tile(impassable);
