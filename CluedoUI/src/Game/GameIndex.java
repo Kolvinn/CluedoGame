@@ -52,6 +52,7 @@ public class GameIndex {
 		boardObjects= populateBoard();
 		deck = new CardDeck();
 		middleCards= deck.setMiddleCards();
+		System.out.println(middleCards);
 
 	}
 
@@ -96,7 +97,7 @@ public class GameIndex {
 			System.out.println(object.getName() +"    "+passableActions);
 			if(object instanceof Character && passableActions.contains(object.getName())){
 				System.out.println(object.getName());
-				((Character) object).setAsPlayer();
+				((Character) object).setAsPlayer(true);
 				((Character) object).setPlayerName(pc.get(object.getName()));
 			}
 		}
@@ -198,7 +199,7 @@ public class GameIndex {
 	 * @param player
 	 */
 	public void eliminatePlayer(Character player){
-		boardObjects.remove(player);
+		player.setAsPlayer(false);
 		System.err.println(player.getName() + " was eliminated");
 	}
 

@@ -63,8 +63,8 @@ public class Character extends BoardObject {
 	 * Sets the character as a player character
 	 *
 	 */
-	public void setAsPlayer() {
-		isPlayer = true;
+	public void setAsPlayer(boolean isplayer) {
+		isPlayer = isplayer;
 	}
 
 	/**

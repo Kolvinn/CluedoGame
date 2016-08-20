@@ -10,9 +10,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import cards.Card;
 import jFrame.CFrame;
-
+import main.Main;
 import jComponents.Character;
 
 /**
@@ -79,8 +81,7 @@ public class GameRunner implements KeyListener, MouseListener {
 				Set<String> playerActions;
 				while (hasActions) {
 					playerActions = board.availableActions(currentPlayer, lastAction);
-					frame.getSidePanel().getText().setText(
-							"\n\n***" + currentPlayer.playerName() + "'s turn!***\n\nPlease Select an Action Button\n");
+					frame.getSidePanel().getText().setText("\n\n***" + currentPlayer.playerName() + "'s turn!***\n\nPlease Select an Action Button\n");
 					// deals the hand for the current player
 					frame.getCardPanel().setCurrentPlayer(currentPlayer);
 					frame.repaint();
@@ -90,16 +91,16 @@ public class GameRunner implements KeyListener, MouseListener {
 					lastAction = buttonPressed;
 					executeAction(buttonPressed, currentPlayer);
 
-					frame.getSidePanel().getText()
-							.setText(currentPlayer.playerName() + " successfully\ncompleted " + lastAction + "\n");
 				}
 				frame.getSidePanel().getText().setText("\n" + currentPlayer.playerName() + "'s turn is over\n");
 				lastAction = null;
 				hasActions = true;
+				System.out.println("here");
 			}
 
 		frame.getSidePanel().getText().setText("\nEND GAME\n");
 	}
+	
 
 	/**
 	 * Executes the selected action for the player
@@ -189,8 +190,6 @@ public class GameRunner implements KeyListener, MouseListener {
 		Map<Character, Set<Card>> refuteCards = new HashMap<Character, Set<Card>>();
 		for (Character pc : index.players()) {
 			//checking for all player apart from current
-			//TODO 
-			//Need to fix cards being recognized because some are missing
 			if(!pc.equals(currentPlayer)){
 				System.out.println("player: "+pc.getName()+",   hand: "+pc.hand());
 				for (Card card : pc.hand()){
@@ -263,7 +262,7 @@ public class GameRunner implements KeyListener, MouseListener {
 			}
 			System.out.println(buttonPressed);
 			selectedTokens.add(buttonPressed);
-			frame.getSidePanel().getText().setText("Suggestion: " + buttonPressed + "\n");
+			frame.getSidePanel().getText().setText("Accusation: " + buttonPressed + "\n");
 		}
 		
 
@@ -277,9 +276,13 @@ public class GameRunner implements KeyListener, MouseListener {
 			victory = false;
 
 		if (victory)
-			win();
-		else
+			win(player);
+		else{
 			index.eliminatePlayer(player);
+			hasActions=false;
+			frame.getSidePanel().getText().setText("\n\n***THE ACCUSATION WAS***\n       INCORRECT\n\n");
+			frame.getSidePanel().getText().setText("\n\n***"+player.getName()+"***\n HAS BEEN ELIMINATED\n\n");
+		}
 
 	}
 
@@ -299,8 +302,20 @@ public class GameRunner implements KeyListener, MouseListener {
 	 * move
 	 *
 	 */
-	public void win() {
+	private void win(Character player) {
 		gameState = GameState.FINISHED;
+		String ObjButtons[] = { "Restart", "Exit" };
+		int PromptResult = JOptionPane.showOptionDialog(null, "GAME OVER\n"+player.playerName()+" "
+				+ ""
+				+ "HAS WON",
+				"Close Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, ObjButtons,
+				ObjButtons[1]);
+		if (PromptResult == 1) {
+			System.exit(0);
+		}
+		else if(PromptResult == 0){
+			Main.restart();
+		}
 	}
 
 	@Override

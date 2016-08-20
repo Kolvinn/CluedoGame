@@ -119,6 +119,8 @@ public class CardPanel extends JPanel {
 			}
 			//time to choose suggestion cards
 			else {
+				//This has two states, one showing the cards to be picked, the other showing what card was picked
+				//obviously because this is on the same screen any type of picking a card to show is impractical 
 				x=200;
 				System.out.println(player.hand());
 				System.out.println(suggestedCards);

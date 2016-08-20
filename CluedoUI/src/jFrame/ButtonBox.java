@@ -106,7 +106,6 @@ public class ButtonBox extends JPanel {
 	 * @return players playing
 	 */
 	private String enableSlider() {
-		System.out.println("Enabling sliders");
 		textBox.setText("Please use the slider to set the\nnumber of players");
 
 		makeSliders();
@@ -135,7 +134,6 @@ public class ButtonBox extends JPanel {
 	 * @return player name and character selected
 	 */
 	private String enableCharacterSelect(Set<String> values) {
-		System.out.println("Setting player characters");
 		ButtonGroup buttonMenu = new ButtonGroup();
 		textBox.enableTextField();
 
@@ -209,7 +207,6 @@ public class ButtonBox extends JPanel {
 	private String enableButtons(String array, Set<String> enabled) {
 		JButton[] buttons;
 		String[] buttonNames;
-		textBox.setText("Enabling " + array + "\n");
 
 		/*
 		 * Based on the 'array' string passed in, it determines which
