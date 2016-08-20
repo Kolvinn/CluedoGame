@@ -1,6 +1,7 @@
 package jComponents;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JPanel;
@@ -34,7 +35,12 @@ public class SidePanel extends JPanel {
 
 		setVisible(true);
 	}
-
+	public void setBoldFont(){
+		getText().setFont(new Font("Dialog", Font.BOLD, 14));
+	}
+	public void setNormalFont(){
+		getText().setFont(new Font("Dialog", Font.PLAIN, 12));
+	}
 	/**
 	 * Returns the buttons section of the side panel
 	 *

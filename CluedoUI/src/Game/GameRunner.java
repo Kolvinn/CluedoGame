@@ -1,5 +1,6 @@
 package Game;
 
+import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -58,6 +59,7 @@ public class GameRunner implements KeyListener, MouseListener {
 		this.index = index;
 		frame.addKeyListener(this);
 		frame.setFocusable(true);
+		frame.addMouseListener(this);
 
 		playGame();
 
@@ -177,6 +179,7 @@ public class GameRunner implements KeyListener, MouseListener {
 		}
 
 		frame.getSidePanel().getText().setText("Suggestion has been made\n");
+		System.out.println("suggested Cards: "+selectedTokens);
 
 		/*
 		 * Allow other players to refute the player's suggestion based on the
@@ -189,19 +192,19 @@ public class GameRunner implements KeyListener, MouseListener {
 			//TODO 
 			//Need to fix cards being recognized because some are missing
 			if(!pc.equals(currentPlayer)){
+				System.out.println("player: "+pc.getName()+",   hand: "+pc.hand());
 				for (Card card : pc.hand()){
 					if (selectedTokens.contains(card.name())) {
 						System.out.println("THE SELECTED CARDS  : "+card);
 						refuted.add(card);   //getting all cards that match selected suggest cards
+						refuteCards.put(pc, refuted);
 					}
 				}
-				refuteCards.put(pc, refuted);
-				refuted.clear();
+				refuted= new HashSet<Card>();
 			}
 		}
 
 		if (!refuteCards.isEmpty()) {
-			String refutedCard = null;
 			for (Map.Entry<Character, Set<Card>> entry : refuteCards.entrySet()) {
 				frame.getCardPanel().setCurrentPlayer(entry.getKey());
 				frame.getCardPanel().setSuggestCards(entry.getValue());
@@ -209,19 +212,22 @@ public class GameRunner implements KeyListener, MouseListener {
 				frame.repaint();
 				//while the player has not selected the card
 				while(!selectedCard){
-					//System.out.println("is in ther");
 					sleep(100);
 				}
-				sleep(3000);
-				selectedCard=false;
+				frame.repaint();
+				sleep(5000);
+				selectedCard=false;		
 				frame.getCardPanel().hasSuggested(false);
-				
+						
 			}
+			frame.getCardPanel().setSuggestCards(null);		
 		}
 		else{
+
 			frame.getSidePanel().getText().setText("\n\n***No cards to show!!***\n\n");
 			
 		}
+		frame.repaint();
 
 	}
 
@@ -259,6 +265,7 @@ public class GameRunner implements KeyListener, MouseListener {
 			selectedTokens.add(buttonPressed);
 			frame.getSidePanel().getText().setText("Suggestion: " + buttonPressed + "\n");
 		}
+		
 
 		// Determines whether or not the accusation was correct
 		boolean victory = true;
@@ -336,15 +343,22 @@ public class GameRunner implements KeyListener, MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		for(Card c : frame.getCardPanel().getSuggestCards()){
-			if(c.getRectangle().contains(e.getPoint()))
-				selectedCard=true;
-				frame.getCardPanel().hasSuggested(true);
-				frame.getCardPanel().getSuggestCards().clear();
-				frame.getCardPanel().getSuggestCards().add(c);			
+		if(frame.getCardPanel().getSuggestCards()!=null){
+			System.out.println(frame.getCardPanel().getSuggestCards());
+			Card theCard;
+			for(Card c : frame.getCardPanel().getSuggestCards()){
+				System.out.println("card rectangle: "+c.getRectangle()+"    mouse Point: "+e.getPoint());
+				if(c.getRectangle().contains(e.getPoint())){
+					selectedCard=true;				
+					frame.getCardPanel().hasSuggested(true);
+					frame.getCardPanel().getSuggestCards().clear();
+					frame.getCardPanel().getSuggestCards().add(c);
+					break;
+				}
+			}
 		}
-			
-		
+
+
 	}
 
 	@Override

@@ -47,16 +47,16 @@ public class ButtonBox extends JPanel {
 
 	private JButton[] characters = { Scarlett, Mustard, White, Green, Peacock, Plum };
 	private JRadioButton[] Rcharacters = { RScarlett, RMustard, RWhite, RGreen, RPeacock, RPlum };
-	private String[] characterNames = { "Miss Scarlett", "Colonel Mustard", "Mrs White", "Reverend Green",
-			"Mrs Peacock", "Professor Plum" };
+	private String[] characterNames = { "MissScarlett", "ColonelMustard", "MrsWhite", "ReverendGreen",
+			"MrsPeacock", "ProfessorPlum" };
 
 	private JButton[] rooms = { Kitchen, Ballroom, Conservatory, DiningRoom, BillardRoom, Library, Lounge, Hall,
 			Study };
-	private String[] roomNames = { "Kitchen", "Ball room", "Conservatory", "Dining Room", "Billard Room", "Library",
+	private String[] roomNames = { "Kitchen", "BallRoom", "Conservatory", "DiningRoom", "BillardRoom", "Library",
 			"Lounge", "Hall", "Study" };
 
 	private JButton[] weapons = { Candlestick, Dagger, LeadPipe, Revolver, Rope, Spanner };
-	private String[] weaponNames = { "Candlestick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner" };
+	private String[] weaponNames = { "Candlestick", "Knife", "LeadPipe", "Revolver", "Rope", "Wrench" };
 
 	private String action = null;
 

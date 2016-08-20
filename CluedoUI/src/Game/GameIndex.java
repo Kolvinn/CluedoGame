@@ -140,12 +140,12 @@ public class GameIndex {
 	 */
 	private Set<BoardObject> createCharacters(){
 		Set<BoardObject> charrs = new HashSet<BoardObject>();
-		charrs.add(new Character(getImage("xboardObjects/missscarlettCut.png"),new Coordinate(23,19),"Miss Scarlett"));
-		charrs.add(new Character(getImage("xboardObjects/colonelmustardCut.png"),new Coordinate(0,17),"Colonel Mustard"));
-		charrs.add(new Character(getImage("xboardObjects/mrswhiteJ2.png"),new Coordinate(14,0),"Mrs White"));
-		charrs.add(new Character(getImage("xboardObjects/revgreenCut.png"),new Coordinate(9,0),"Reverend Green"));
-		charrs.add(new Character(getImage("xboardObjects/mrspeacockCut.png"),new Coordinate(23,6),"Mrs Peacock"));
-		charrs.add(new Character(getImage("xboardObjects/proffessorplumCut.png"),new Coordinate(7,24),"Professor Plum"));
+		charrs.add(new Character(getImage("xboardObjects/missscarlettCut.png"),new Coordinate(23,19),"MissScarlett"));
+		charrs.add(new Character(getImage("xboardObjects/colonelmustardCut.png"),new Coordinate(0,17),"ColonelMustard"));
+		charrs.add(new Character(getImage("xboardObjects/mrswhiteJ2.png"),new Coordinate(14,0),"MrsWhite"));
+		charrs.add(new Character(getImage("xboardObjects/revgreenCut.png"),new Coordinate(9,0),"ReverendGreen"));
+		charrs.add(new Character(getImage("xboardObjects/mrspeacockCut.png"),new Coordinate(23,6),"MrsPeacock"));
+		charrs.add(new Character(getImage("xboardObjects/proffessorplumCut.png"),new Coordinate(7,24),"ProfessorPlum"));
 		return charrs;
 	}
 	/**
@@ -160,7 +160,7 @@ public class GameIndex {
 		weaps.add(new BoardObject(getImage("xboardObjects/knife1.png"), new Coordinate(12,3), "Knife"));
 		weaps.add(new BoardObject(getImage("xboardObjects/leadpipe1.png"), new Coordinate(20,3), "LeadPipe"));
 		weaps.add(new BoardObject(getImage("xboardObjects/rope1.png"), new Coordinate(20,10), "Rope"));
-		weaps.add(new BoardObject(getImage("xboardObjects/spanner1.png"), new Coordinate(20,16), "Spanner"));
+		weaps.add(new BoardObject(getImage("xboardObjects/spanner1.png"), new Coordinate(20,16), "Wrench"));
 		return weaps;
 	}
 	public Set<BoardObject> boardObjects(){

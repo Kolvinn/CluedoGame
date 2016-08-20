@@ -31,7 +31,7 @@ public class Board {
 	}
 
 	public String roomName(int x, int y){
-		return ((RoomTile)tiles[x][y]).toString();
+		return ((RoomTile)tiles[x][y]).roomName();
 	}
 
 	/**
@@ -107,6 +107,9 @@ public class Board {
 				roomExits.add(coo);
 		}
 		return roomExits;
+	}
+	public String getRoomName(Character player){
+		return ((RoomTile)tiles[player.getX()][player.getY()]).roomName();
 	}
 
 	/**

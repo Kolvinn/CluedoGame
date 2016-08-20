@@ -54,7 +54,7 @@ public class CardPanel extends JPanel {
 	 */
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(1000, 210);
+		return new Dimension(1000, 200);
 	}
 	public void setSuggestCards(Set<Card> suggestedCards){
 		this.suggestedCards=suggestedCards;
@@ -119,16 +119,17 @@ public class CardPanel extends JPanel {
 			}
 			//time to choose suggestion cards
 			else {
+				x=200;
 				System.out.println(player.hand());
 				System.out.println(suggestedCards);
 				System.out.println("is supposed to be drawing some other cards pls");
 				if(!hasSuggested)
-					g.drawString(player.playerName() + " (" + player.getName() + ") Please Select a card to show", val, 20);
+					g.drawString(player.playerName() + " (" + player.getName() + ") Please select a card to show", val, 20);
 				else
 					g.drawString(player.playerName() + " (" + player.getName() + ") was holding onto the card...", val, 20);
 				for(Card card :suggestedCards){
 					g.drawImage(card.image(), x, Y, width, height, this);
-					card.setRectangle(x, Y, width, height);
+					card.setRectangle(x, 820+Y, width, height);
 					x += width + 5; // or whatever the card width is
 				}
 			}

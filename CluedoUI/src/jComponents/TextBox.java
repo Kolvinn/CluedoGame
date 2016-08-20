@@ -78,6 +78,7 @@ public class TextBox extends JPanel {
 	 */
 	public void setText(String text){
 		textArea.setText(textArea.getText()+text);
+		textArea.setCaretPosition(textArea.getDocument().getLength());
 	}
 
 	/**

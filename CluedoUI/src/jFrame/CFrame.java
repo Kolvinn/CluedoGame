@@ -20,7 +20,7 @@ public class CFrame extends JFrame {
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new CWindowListener());
-		setBounds(0, 0, 1000, 1000);
+		setBounds(0, 0, 1050, 1020);
 		setLayout(new BorderLayout());
 	}
 
