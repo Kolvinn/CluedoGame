@@ -12,7 +12,6 @@ import javax.swing.JFrame;
 import jComponents.SidePanel;
 
 public class CFrame extends JFrame {
-	ArrayList<Component> components = new ArrayList<Component>();
 	private SidePanel sidePanel;
 	private CardPanel cardPanel;
 	private BoardPanel boardPanel;
@@ -26,26 +25,34 @@ public class CFrame extends JFrame {
 
 	public void add(Component comp, Object constraints){
 		if(comp instanceof SidePanel){
-			System.out.println("side");
 			sidePanel = (SidePanel) comp;
 		}
 		else if(comp instanceof CardPanel){
-			System.out.println("card");
 			cardPanel = (CardPanel) comp;
 		}
 		else if(comp instanceof BoardPanel){
-			System.out.println("cluedo");
 			boardPanel= (BoardPanel) comp;
 		}
-		//System.out.println(comp.getClass());
 		super.add(comp, constraints);
 	}
+	/**
+	 * Returns the instance of the SidePanel that contains the button box and Text field
+	 * @return
+	 */
 	public SidePanel getSidePanel(){
 		return sidePanel;
 	}
+	/**
+	 * Returns the instance of the board panel that contains the board
+	 * @return
+	 */
 	public BoardPanel getBoardPanel(){
 		return boardPanel;
 	}
+	/**
+	 * Returns an instance of cardPanel
+	 * @return
+	 */
 	public CardPanel getCardPanel(){
 		return cardPanel;
 	}

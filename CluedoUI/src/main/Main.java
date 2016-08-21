@@ -30,7 +30,7 @@ public class Main {
 		//create the Menu bar
 		
 		//create the jpanel that stores the gameboard
-		frame.add(new BoardPanel(game.getImage("xboardObjects/finalBoard.png"), game.boardObjects()),BorderLayout.WEST);
+		frame.add(new BoardPanel(game.getImage("xboardObjects/finalBoard1.png"), game.boardObjects()),BorderLayout.WEST);
 		//the board that is used for player movement logic
 		Board board = new Board(game.boardObjects());
 
