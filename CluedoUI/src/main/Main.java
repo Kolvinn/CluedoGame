@@ -45,6 +45,11 @@ public class Main {
 		game.createStartingPlayers(frame);
 		GameRunner gameRunner = new GameRunner(board, frame, game);
 	}
+	
+	/**
+	 * Restarts the game
+	 * 
+	 */
 	public static void restart(){
 		main(null);
 	}

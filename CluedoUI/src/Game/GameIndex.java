@@ -56,14 +56,29 @@ public class GameIndex {
 
 	}
 
+	/**
+	 * Returns the deck for the game
+	 * 
+	 * @return
+	 */
 	public CardDeck cardDeck(){
 		return deck;
 	}
 
+	/**
+	 * Returns the victory cards located in the center of the board
+	 * 
+	 * @return
+	 */
 	public Set<Card> getMiddleCards(){
 		return middleCards;
 	}
 
+	/**
+	 * Returns whether or not the game has ended
+	 * 
+	 * @return
+	 */
 	public boolean hasEnded(){
 		return state == GameState.FINISHED;
 	}
@@ -128,7 +143,11 @@ public class GameIndex {
 		return image;
 	}
 
-
+	/**
+	 * Returns all the objects on the board as a set
+	 * 
+	 * @return
+	 */
 	private Set<BoardObject> populateBoard(){
 		Set<BoardObject> ob = new HashSet<BoardObject>();
 		ob.addAll(createCharacters());
@@ -164,6 +183,12 @@ public class GameIndex {
 		weaps.add(new BoardObject(getImage("xboardObjects/spanner1.png"), new Coordinate(20,16), "Wrench"));
 		return weaps;
 	}
+	
+	/**
+	 * Returns the board objects
+	 * 
+	 * @return
+	 */
 	public Set<BoardObject> boardObjects(){
 		return boardObjects;
 	}

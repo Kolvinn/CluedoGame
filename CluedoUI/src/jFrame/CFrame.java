@@ -11,10 +11,22 @@ import javax.swing.JFrame;
 
 import jComponents.SidePanel;
 
+/**
+ * The JFrame that holds the whole game. It holds the side panel, the
+ * card panel and the board panel.
+ * 
+ * @author Jeremy
+ *
+ */
 public class CFrame extends JFrame {
 	private SidePanel sidePanel;
 	private CardPanel cardPanel;
 	private BoardPanel boardPanel;
+	
+	/**
+	 * Creates a CFrame object and sets the frame options
+	 * 
+	 */
 	public CFrame(){
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -23,6 +35,10 @@ public class CFrame extends JFrame {
 		setLayout(new BorderLayout());
 	}
 
+	/**
+	 * Adds the panels to the cluedo frame object
+	 * 
+	 */
 	public void add(Component comp, Object constraints){
 		if(comp instanceof SidePanel){
 			sidePanel = (SidePanel) comp;

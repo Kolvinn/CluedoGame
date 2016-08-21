@@ -68,6 +68,12 @@ public abstract class BoardIndex {
 			+ "RHall__ 588,RHall__ 589,RHall__|590,WXX|591,H__|592,WXX|593,RStudy__ 594,RStudy__ 595,RStudy__ 596,RStudy__ 597,RStudy__ 598,"
 			+ "RStudy__|599,";
 
+	/**
+	 * Returns the room that the entrance belongs to
+	 * 
+	 * @param index
+	 * @return
+	 */
 	public static String entranceIndex(int index){
 		if(index>=128 && index<=182)
 			return "BallRoom";
